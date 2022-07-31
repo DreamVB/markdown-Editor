@@ -1,0 +1,49 @@
+object frmChars: TfrmChars
+  Left = 481
+  Height = 382
+  Top = 172
+  Width = 481
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'HTML Entities'
+  ClientHeight = 382
+  ClientWidth = 481
+  DesignTimePPI = 144
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lstData: TListBox
+    Left = 16
+    Height = 356
+    Top = 20
+    Width = 262
+    ItemHeight = 0
+    OnSelectionChange = lstDataSelectionChange
+    TabOrder = 0
+  end
+  object bPreview: TBevel
+    Left = 288
+    Height = 161
+    Top = 20
+    Width = 176
+    OnPaint = bPreviewPaint
+  end
+  object cmdInsert: TButton
+    Left = 288
+    Height = 38
+    Top = 192
+    Width = 176
+    Caption = 'Insert'
+    OnClick = cmdInsertClick
+    TabOrder = 1
+  end
+  object cmdClose: TButton
+    Left = 288
+    Height = 38
+    Top = 240
+    Width = 176
+    Caption = 'Close'
+    OnClick = cmdCloseClick
+    TabOrder = 2
+  end
+end

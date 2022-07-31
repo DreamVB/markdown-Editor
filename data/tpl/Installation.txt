@@ -1,0 +1,7 @@
+## Installation
+
+Install MyProject
+
+```
+   Run Setup.exe
+```

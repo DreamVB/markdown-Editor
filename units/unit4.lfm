@@ -1,0 +1,78 @@
+object frmTable: TfrmTable
+  Left = 674
+  Height = 330
+  Top = 252
+  Width = 343
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Insert Table'
+  ClientHeight = 330
+  ClientWidth = 343
+  DesignTimePPI = 144
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lblRows: TLabeledEdit
+    Left = 24
+    Height = 33
+    Top = 48
+    Width = 296
+    EditLabel.Height = 25
+    EditLabel.Width = 296
+    EditLabel.Caption = 'Enter the number of rows'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    Text = '3'
+  end
+  object lblCells: TLabeledEdit
+    Left = 24
+    Height = 33
+    Top = 128
+    Width = 296
+    EditLabel.Height = 25
+    EditLabel.Width = 296
+    EditLabel.Caption = 'Enter the number of cells'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    Text = '3'
+  end
+  object cmdInsert: TSpeedButton
+    Left = 24
+    Height = 39
+    Top = 272
+    Width = 122
+    Caption = 'Insert Table'
+    OnClick = cmdInsertClick
+  end
+  object cboCellAlign: TComboBox
+    Left = 24
+    Height = 33
+    Top = 208
+    Width = 142
+    ItemHeight = 25
+    Items.Strings = (
+      'Left'
+      'Right'
+      'Center'
+      'Auto'
+    )
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 25
+    Top = 176
+    Width = 112
+    Caption = 'Cell alignment'
+    ParentColor = False
+  end
+  object cmdClose: TSpeedButton
+    Left = 160
+    Height = 39
+    Top = 272
+    Width = 90
+    Caption = 'Close'
+    OnClick = cmdCloseClick
+  end
+end

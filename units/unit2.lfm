@@ -1,0 +1,54 @@
+object frmImage: TfrmImage
+  Left = 510
+  Height = 273
+  Top = 296
+  Width = 534
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Insert Image'
+  ClientHeight = 273
+  ClientWidth = 534
+  DesignTimePPI = 144
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lblImgDesc: TLabeledEdit
+    Left = 16
+    Height = 33
+    Top = 57
+    Width = 496
+    EditLabel.Height = 25
+    EditLabel.Width = 496
+    EditLabel.Caption = 'Image Description'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+  end
+  object lblImgUrl: TLabeledEdit
+    Left = 16
+    Height = 33
+    Top = 160
+    Width = 496
+    EditLabel.Height = 25
+    EditLabel.Width = 496
+    EditLabel.Caption = 'Image URL'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    Text = 'http://'
+  end
+  object cmdInsert: TSpeedButton
+    Left = 328
+    Height = 39
+    Top = 216
+    Width = 91
+    Caption = 'Insert'
+    OnClick = cmdInsertClick
+  end
+  object cmdClose: TSpeedButton
+    Left = 427
+    Height = 39
+    Top = 216
+    Width = 91
+    Caption = 'Close'
+    OnClick = cmdCloseClick
+  end
+end

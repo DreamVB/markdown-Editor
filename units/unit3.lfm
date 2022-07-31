@@ -1,0 +1,55 @@
+object frmHyeperLink: TfrmHyeperLink
+  Left = 1355
+  Height = 273
+  Top = 181
+  Width = 534
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Insert Hyperlink'
+  ClientHeight = 273
+  ClientWidth = 534
+  DesignTimePPI = 144
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lblLinkDesc: TLabeledEdit
+    Left = 16
+    Height = 33
+    Top = 48
+    Width = 496
+    EditLabel.Height = 25
+    EditLabel.Width = 496
+    EditLabel.Caption = 'Enter Link Description'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+  end
+  object lblLinkUrl: TLabeledEdit
+    Left = 16
+    Height = 33
+    Top = 160
+    Width = 496
+    EditLabel.Height = 25
+    EditLabel.Width = 496
+    EditLabel.Caption = 'Enter Hyperlink Address'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    Text = 'http://'
+  end
+  object cmdInsert: TButton
+    Left = 328
+    Height = 39
+    Top = 216
+    Width = 91
+    Caption = 'Insert'
+    OnClick = cmdInsertClick
+    TabOrder = 2
+  end
+  object cmdClose: TButton
+    Left = 427
+    Height = 39
+    Top = 216
+    Width = 91
+    Caption = 'Close'
+    OnClick = cmdCloseClick
+    TabOrder = 3
+  end
+end

@@ -1,0 +1,72 @@
+object frmLan: TfrmLan
+  Left = 1178
+  Height = 609
+  Top = 176
+  Width = 316
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'languages'
+  ClientHeight = 609
+  ClientWidth = 316
+  DesignTimePPI = 144
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lbllanguage: TLabel
+    Left = 24
+    Height = 25
+    Top = 24
+    Width = 165
+    Caption = 'Select your language'
+    ParentColor = False
+  end
+  object lstLan: TListBox
+    Left = 24
+    Height = 464
+    Top = 56
+    Width = 264
+    Items.Strings = (
+      'ASP'
+      'Bash'
+      'C'
+      'C++'
+      'CoffeeScript'
+      'CSharp'
+      'CSS'
+      'D'
+      'Dart'
+      'Delphi'
+      'HTML'
+      'Java'
+      'JavaScript'
+      'JSON'
+      'Lua'
+      'markdown'
+      'Perl'
+      'PHP'
+      'Python'
+      'SQL'
+      'VB'
+      'XML'
+    )
+    ItemHeight = 25
+    Sorted = True
+    TabOrder = 0
+  end
+  object cmdInsert: TSpeedButton
+    Left = 24
+    Height = 39
+    Top = 544
+    Width = 107
+    Caption = 'Insert'
+    OnClick = cmdInsertClick
+  end
+  object cmdInsert1: TSpeedButton
+    Left = 144
+    Height = 39
+    Top = 544
+    Width = 107
+    Caption = 'Close'
+    OnClick = cmdInsert1Click
+  end
+end

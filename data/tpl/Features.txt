@@ -1,0 +1,6 @@
+## Features
+
+- Light/dark mode toggle
+- Fullscreen mode
+- Cross platform
+
