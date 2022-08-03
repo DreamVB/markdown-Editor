@@ -43,7 +43,7 @@ templates, inserting images, hyperlinks and even tables and much more.
 - Added cut append, copy append and delete to edit menu
 - Added view menu
 - Added options menu
-- Fixed but with crtl+h does not now show the hyperlink dialog
+- Fixed but with Shift+h does not now show the hyperlink dialog
 - Fixed and tweaks a few other issues.
 
 ## Authors
