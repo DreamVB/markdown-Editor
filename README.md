@@ -9,7 +9,7 @@ templates, inserting images, hyperlinks and even tables and much more.
 
 <img width="543" alt="logo" src="https://user-images.githubusercontent.com/17520035/182692953-7049820f-c14d-478a-98f4-e50bd32bb511.png">
 
-## Update changes 03/08/2022
+## Features
 
 - Insert Headings
 - Set font styles
@@ -31,7 +31,7 @@ templates, inserting images, hyperlinks and even tables and much more.
 - and more
 
 
-## Changes
+## Update changes 03/08/2022
 
 - Fixed goto line now should work on Linux
 - Tweaked some of the icons on the toolbar
