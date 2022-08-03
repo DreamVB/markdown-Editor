@@ -16,6 +16,7 @@ var
   TableCode: string;
   CodeLan: string;
   CharCode: string;
+  LicStr: string;
   Data_Path: string;
 
 implementation

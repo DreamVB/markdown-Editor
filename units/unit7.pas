@@ -30,7 +30,7 @@ type
 var
   frmChars: TfrmChars;
   lChars: TStringList;
-  ch : String;
+  ch: string;
 
 implementation
 
@@ -71,7 +71,7 @@ begin
     end;
   end;
   if lstData.Count > 0 then
-    lstData.ItemIndex := 0;
+    lstData.ItemIndex := 1;
 end;
 
 procedure TfrmChars.FormCreate(Sender: TObject);
@@ -84,17 +84,17 @@ end;
 
 procedure TfrmChars.lstDataSelectionChange(Sender: TObject; User: boolean);
 var
-  sLine : String;
-  sPos : Integer;
+  sLine: string;
+  sPos: integer;
 begin
   sLine := lChars[lstData.ItemIndex];
 
-  sPos := Pos('|',sLine);
+  sPos := Pos('|', sLine);
 
   if sPos > 0 then
   begin
-    Tools.CharCode := Trim(Copy(sLine,sPos + 1));
-    ch := Trim(LeftStr(sLine,sPos - 1));
+    Tools.CharCode := Trim(Copy(sLine, sPos + 1));
+    ch := Trim(LeftStr(sLine, sPos - 1));
   end;
 
   if lstData.ItemIndex = 0 then ch := ' ';
@@ -116,13 +116,13 @@ end;
 
 procedure TfrmChars.bPreviewPaint(Sender: TObject);
 var
-  x,y : Integer;
+  x, y: integer;
 begin
   x := (bPreview.Width - bPreview.Canvas.TextWidth(ch)) div 2;
   y := (bPreview.Height - bPreview.Canvas.TextHeight(ch)) div 2;
-  bPreview.Canvas.FillRect(0,0,bPreview.Width,bPreview.Height);
+  bPreview.Canvas.FillRect(0, 0, bPreview.Width, bPreview.Height);
   //draw the char
-  bPreview.Canvas.TextOut(x,y,ch);
+  bPreview.Canvas.TextOut(x, y, ch);
 end;
 
 end.

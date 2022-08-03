@@ -12,11 +12,11 @@ type
   { TfrmLan }
 
   TfrmLan = class(TForm)
-    cmdInsert1: TSpeedButton;
+    cmdClose: TButton;
+    cmdInsert: TButton;
     lbllanguage: TLabel;
     lstLan: TListBox;
-    cmdInsert: TSpeedButton;
-    procedure cmdInsert1Click(Sender: TObject);
+    procedure cmdCloseClick(Sender: TObject);
     procedure cmdInsertClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -46,9 +46,9 @@ begin
   lstLan.ItemIndex := 0;
 end;
 
-procedure TfrmLan.cmdInsert1Click(Sender: TObject);
+procedure TfrmLan.cmdCloseClick(Sender: TObject);
 begin
-  tools.ButtonPress := 0;
+  Tools.ButtonPress := 0;
   Close;
 end;
 

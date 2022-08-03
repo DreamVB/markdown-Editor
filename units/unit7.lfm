@@ -1,12 +1,12 @@
 object frmChars: TfrmChars
-  Left = 481
-  Height = 382
-  Top = 172
+  Left = 871
+  Height = 395
+  Top = 273
   Width = 481
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'HTML Entities'
-  ClientHeight = 382
+  ClientHeight = 395
   ClientWidth = 481
   DesignTimePPI = 144
   OnCreate = FormCreate
@@ -19,7 +19,7 @@ object frmChars: TfrmChars
     Width = 262
     ItemHeight = 0
     OnSelectionChange = lstDataSelectionChange
-    TabOrder = 0
+    TabOrder = 2
   end
   object bPreview: TBevel
     Left = 288
@@ -34,8 +34,9 @@ object frmChars: TfrmChars
     Top = 192
     Width = 176
     Caption = 'Insert'
+    Default = True
     OnClick = cmdInsertClick
-    TabOrder = 1
+    TabOrder = 0
   end
   object cmdClose: TButton
     Left = 288
@@ -44,6 +45,6 @@ object frmChars: TfrmChars
     Width = 176
     Caption = 'Close'
     OnClick = cmdCloseClick
-    TabOrder = 2
+    TabOrder = 1
   end
 end

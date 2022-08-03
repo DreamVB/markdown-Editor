@@ -1,12 +1,12 @@
 object frmLan: TfrmLan
-  Left = 1178
-  Height = 609
-  Top = 176
+  Left = 917
+  Height = 599
+  Top = 111
   Width = 316
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'languages'
-  ClientHeight = 609
+  ClientHeight = 599
   ClientWidth = 316
   DesignTimePPI = 144
   OnCreate = FormCreate
@@ -16,8 +16,8 @@ object frmLan: TfrmLan
     Left = 24
     Height = 25
     Top = 24
-    Width = 165
-    Caption = 'Select your language'
+    Width = 113
+    Caption = 'Pick language:'
     ParentColor = False
   end
   object lstLan: TListBox
@@ -25,6 +25,11 @@ object frmLan: TfrmLan
     Height = 464
     Top = 56
     Width = 264
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -20
+    Font.Name = 'Courier New'
+    Font.Pitch = fpFixed
+    Font.Quality = fqDraft
     Items.Strings = (
       'ASP'
       'Bash'
@@ -49,24 +54,28 @@ object frmLan: TfrmLan
       'VB'
       'XML'
     )
-    ItemHeight = 25
+    ItemHeight = 22
+    ParentFont = False
     Sorted = True
+    TabOrder = 1
+  end
+  object cmdInsert: TButton
+    Left = 24
+    Height = 38
+    Top = 536
+    Width = 113
+    Caption = 'Insert'
+    Default = True
+    OnClick = cmdInsertClick
     TabOrder = 0
   end
-  object cmdInsert: TSpeedButton
-    Left = 24
-    Height = 39
-    Top = 544
-    Width = 107
-    Caption = 'Insert'
-    OnClick = cmdInsertClick
-  end
-  object cmdInsert1: TSpeedButton
+  object cmdClose: TButton
     Left = 144
-    Height = 39
-    Top = 544
-    Width = 107
+    Height = 38
+    Top = 536
+    Width = 113
     Caption = 'Close'
-    OnClick = cmdInsert1Click
+    OnClick = cmdCloseClick
+    TabOrder = 2
   end
 end

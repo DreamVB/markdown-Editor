@@ -1,0 +1,56 @@
+object frmLic: TfrmLic
+  Left = 1019
+  Height = 540
+  Top = 196
+  Width = 579
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Licenses'
+  ClientHeight = 540
+  ClientWidth = 579
+  DesignTimePPI = 144
+  OnClose = FormClose
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.2.0'
+  object lblTitle: TLabel
+    Left = 40
+    Height = 25
+    Top = 24
+    Width = 92
+    Caption = 'Pick License'
+    ParentColor = False
+  end
+  object lstLic: TListBox
+    Left = 40
+    Height = 464
+    Top = 56
+    Width = 389
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ItemHeight = 0
+    ParentFont = False
+    TabOrder = 0
+  end
+  object mnuInsert: TButton
+    Left = 440
+    Height = 38
+    Top = 56
+    Width = 113
+    Caption = 'Insert'
+    OnClick = mnuInsertClick
+    TabOrder = 1
+  end
+  object cmdClose: TButton
+    Left = 440
+    Height = 38
+    Top = 104
+    Width = 113
+    Caption = 'Close'
+    OnClick = cmdCloseClick
+    TabOrder = 2
+  end
+end

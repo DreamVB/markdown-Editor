@@ -1,13 +1,13 @@
 object frmTable: TfrmTable
-  Left = 674
-  Height = 330
-  Top = 252
-  Width = 343
+  Left = 660
+  Height = 267
+  Top = 216
+  Width = 473
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Insert Table'
-  ClientHeight = 330
-  ClientWidth = 343
+  ClientHeight = 267
+  ClientWidth = 473
   DesignTimePPI = 144
   OnCreate = FormCreate
   Position = poMainFormCenter
@@ -19,9 +19,9 @@ object frmTable: TfrmTable
     Width = 296
     EditLabel.Height = 25
     EditLabel.Width = 296
-    EditLabel.Caption = 'Enter the number of rows'
+    EditLabel.Caption = 'Rows:'
     EditLabel.ParentColor = False
-    TabOrder = 0
+    TabOrder = 1
     Text = '3'
   end
   object lblCells: TLabeledEdit
@@ -31,18 +31,10 @@ object frmTable: TfrmTable
     Width = 296
     EditLabel.Height = 25
     EditLabel.Width = 296
-    EditLabel.Caption = 'Enter the number of cells'
+    EditLabel.Caption = 'Columns:'
     EditLabel.ParentColor = False
-    TabOrder = 1
+    TabOrder = 2
     Text = '3'
-  end
-  object cmdInsert: TSpeedButton
-    Left = 24
-    Height = 39
-    Top = 272
-    Width = 122
-    Caption = 'Insert Table'
-    OnClick = cmdInsertClick
   end
   object cboCellAlign: TComboBox
     Left = 24
@@ -57,22 +49,33 @@ object frmTable: TfrmTable
       'Auto'
     )
     Style = csDropDownList
-    TabOrder = 2
+    TabOrder = 3
   end
   object Label1: TLabel
     Left = 24
     Height = 25
     Top = 176
-    Width = 112
-    Caption = 'Cell alignment'
+    Width = 117
+    Caption = 'Text Alignment'
     ParentColor = False
   end
-  object cmdClose: TSpeedButton
-    Left = 160
-    Height = 39
-    Top = 272
-    Width = 90
+  object cmdInsert: TButton
+    Left = 344
+    Height = 38
+    Top = 48
+    Width = 113
+    Caption = 'Insert'
+    Default = True
+    OnClick = cmdInsertClick
+    TabOrder = 0
+  end
+  object cmdClose: TButton
+    Left = 344
+    Height = 38
+    Top = 96
+    Width = 113
     Caption = 'Close'
     OnClick = cmdCloseClick
+    TabOrder = 4
   end
 end

@@ -1,7 +1,7 @@
 object frmAbout: TfrmAbout
-  Left = 437
+  Left = 917
   Height = 248
-  Top = 361
+  Top = 298
   Width = 524
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
@@ -92,7 +92,7 @@ object frmAbout: TfrmAbout
     Height = 25
     Top = 81
     Width = 101
-    Caption = 'Version 1.0.1'
+    Caption = 'Version 1.0.2'
     Font.CharSet = ANSI_CHARSET
     Font.Color = clBlue
     Font.Pitch = fpVariable
@@ -108,9 +108,9 @@ object frmAbout: TfrmAbout
     Shape = bsTopLine
   end
   object lblInfo: TLabel
-    Left = 100
+    Left = 101
     Height = 22
-    Top = 121
+    Top = 120
     Width = 367
     Caption = 'A free and opensource markdown editor.'
     Font.CharSet = ANSI_CHARSET
@@ -120,12 +120,14 @@ object frmAbout: TfrmAbout
     ParentColor = False
     ParentFont = False
   end
-  object cmdOK: TSpeedButton
-    Left = 392
-    Height = 39
+  object cmdOK: TButton
+    Left = 208
+    Height = 38
     Top = 184
-    Width = 98
+    Width = 81
     Caption = 'OK'
+    Default = True
     OnClick = cmdOKClick
+    TabOrder = 0
   end
 end

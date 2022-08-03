@@ -12,8 +12,8 @@ type
   { TfrmHyeperLink }
 
   TfrmHyeperLink = class(TForm)
-    cmdInsert: TButton;
     cmdClose: TButton;
+    cmdInsert: TButton;
     lblLinkDesc: TLabeledEdit;
     lblLinkUrl: TLabeledEdit;
     procedure cmdCloseClick(Sender: TObject);

@@ -13,12 +13,12 @@ type
   { TfrmAbout }
 
   TfrmAbout = class(TForm)
+    cmdOK: TButton;
     Line3d1: TBevel;
     imgLogo: TImage;
     lblTitle: TLabel;
     lblVersion: TLabel;
     lblInfo: TLabel;
-    cmdOK: TSpeedButton;
     procedure cmdOKClick(Sender: TObject);
   private
 

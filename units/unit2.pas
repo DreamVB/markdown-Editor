@@ -5,17 +5,18 @@ unit Unit2;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons, Tools;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
+  StdCtrls, Tools;
 
 type
 
   { TfrmImage }
 
   TfrmImage = class(TForm)
+    cmdClose: TButton;
+    cmdInsert: TButton;
     lblImgDesc: TLabeledEdit;
     lblImgUrl: TLabeledEdit;
-    cmdInsert: TSpeedButton;
-    cmdClose: TSpeedButton;
     procedure cmdCloseClick(Sender: TObject);
     procedure cmdInsertClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

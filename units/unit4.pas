@@ -13,12 +13,12 @@ type
   { TfrmTable }
 
   TfrmTable = class(TForm)
+    cmdInsert: TButton;
+    cmdClose: TButton;
     cboCellAlign: TComboBox;
     Label1: TLabel;
     lblRows: TLabeledEdit;
     lblCells: TLabeledEdit;
-    cmdInsert: TSpeedButton;
-    cmdClose: TSpeedButton;
     procedure cmdCloseClick(Sender: TObject);
     procedure cmdInsertClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -44,6 +44,8 @@ var
   iValue, iCode: integer;
 begin
 
+  iValue := 0;
+
   Val(S, iValue, iCode);
 
   if iCode = 0 then
@@ -58,7 +60,7 @@ end;
 
 procedure TfrmTable.ShowErr(S: string);
 begin
-  MessageDlg(Text, S + ' is not a vaild integer.', mtError, [mbOK], 0);
+  MessageDlg(Text, S + ' was not a correct integer.', mtError, [mbOK], 0);
 end;
 
 procedure TfrmTable.MakeTableCode;
@@ -137,7 +139,7 @@ end;
 
 procedure TfrmTable.FormCreate(Sender: TObject);
 begin
-  cboCellAlign.ItemIndex := 2;
+  cboCellAlign.ItemIndex := 0;
 end;
 
 procedure TfrmTable.cmdCloseClick(Sender: TObject);
@@ -148,15 +150,14 @@ end;
 
 procedure TfrmTable.cmdInsertClick(Sender: TObject);
 begin
-
   if not IsNumberX(lblRows.Text) then
   begin
-    ShowErr('Row');
+    ShowErr('Rows');
     lblRows.SetFocus;
   end
   else if not IsNumberX(lblCells.Text) then
   begin
-    ShowErr('Cell');
+    ShowErr('Columns');
     lblCells.SetFocus;
   end
   else

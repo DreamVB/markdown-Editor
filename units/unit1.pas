@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
-  StdCtrls, ExtCtrls, Tools, Unit2, Unit3, Unit4, Unit5, Unit6, Unit7,
-  FileUtil, StrUtils, Windows, process;
+  StdCtrls, ExtCtrls, Tools, Unit2, Unit3, Unit4, Unit5, Unit6, Unit7, Unit8,
+  StrUtils, Clipbrd, LazFileUtils, LCLIntf;
 
 type
 
@@ -18,6 +18,16 @@ type
     FindDialog1: TFindDialog;
     ImageList1: TImageList;
     MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    mnuVStatus: TMenuItem;
+    mnuOpenFFolder: TMenuItem;
+    Separator14: TMenuItem;
+    mnuIndent: TMenuItem;
+    mnuVToolbar: TMenuItem;
+    mnuLicense: TMenuItem;
+    mnuCopyAppend: TMenuItem;
+    mnuCutAppend: TMenuItem;
+    mnuDelete: TMenuItem;
     mnuInsertFile: TMenuItem;
     Separator13: TMenuItem;
     mnuWordwrap: TMenuItem;
@@ -61,7 +71,10 @@ type
     cmdSuperscript: TToolButton;
     cmdMark: TToolButton;
     cmdHtmlCodes: TToolButton;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
     ToolButton3: TToolButton;
+    cmdLicense: TToolButton;
     txtEd: TMemo;
     mnuHelp: TMenuItem;
     mnuAbout: TMenuItem;
@@ -133,6 +146,7 @@ type
     procedure cmdHyperlinkClick(Sender: TObject);
     procedure cmdImgClick(Sender: TObject);
     procedure cmdItalicClick(Sender: TObject);
+    procedure cmdLicenseClick(Sender: TObject);
     procedure cmdLstCheckClick(Sender: TObject);
     procedure cmdMarkClick(Sender: TObject);
     procedure cmdNewClick(Sender: TObject);
@@ -141,18 +155,25 @@ type
     procedure cmdQuoteClick(Sender: TObject);
     procedure cmdSaveClick(Sender: TObject);
     procedure cmdStrikeClick(Sender: TObject);
+    procedure cmdSubscriptClick(Sender: TObject);
+    procedure cmdSuperscriptClick(Sender: TObject);
     procedure cmdTableClick(Sender: TObject);
     procedure cmdUndoClick(Sender: TObject);
     procedure cmdUOListClick(Sender: TObject);
     procedure FindDialog1Find(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure mnuBoldItalicClick(Sender: TObject);
     procedure mnuCharCodesClick(Sender: TObject);
     procedure mnuCodeLanClick(Sender: TObject);
+    procedure mnuCopyAppendClick(Sender: TObject);
+    procedure mnuCutAppendClick(Sender: TObject);
+    procedure mnuDeleteClick(Sender: TObject);
     procedure mnuFindClick(Sender: TObject);
     procedure mnuGotoClick(Sender: TObject);
     procedure mnuHighlightClick(Sender: TObject);
+    procedure mnuIndentClick(Sender: TObject);
     procedure mnuInlineCodeClick(Sender: TObject);
     procedure mnuBoldClick(Sender: TObject);
     procedure mnuBQuoteClick(Sender: TObject);
@@ -169,9 +190,11 @@ type
     procedure mnuImageClick(Sender: TObject);
     procedure mnuInsertFileClick(Sender: TObject);
     procedure mnuItalicClick(Sender: TObject);
+    procedure mnuLicenseClick(Sender: TObject);
     procedure mnuLowercaseClick(Sender: TObject);
     procedure mnuNewWndClick(Sender: TObject);
     procedure mnuOListClick(Sender: TObject);
+    procedure mnuOpenFFolderClick(Sender: TObject);
     procedure mnuPasteClick(Sender: TObject);
     procedure mnuReplaceClick(Sender: TObject);
     procedure mnuSaveAsClick(Sender: TObject);
@@ -189,6 +212,8 @@ type
     procedure mnuSaveClick(Sender: TObject);
     procedure mnuUOListClick(Sender: TObject);
     procedure mnuUppercaseClick(Sender: TObject);
+    procedure mnuVStatusClick(Sender: TObject);
+    procedure mnuVToolbarClick(Sender: TObject);
     procedure mnuWordwrapClick(Sender: TObject);
     procedure ReplaceDialog1Find(Sender: TObject);
     procedure ReplaceDialog1Replace(Sender: TObject);
@@ -209,11 +234,13 @@ type
     procedure CannotFindText;
     procedure UpdateStatusBar;
     procedure DoOpenDocument;
+    procedure DoOpenDocFromFileDrop(Filename: string);
+    procedure FileReadIonlyMsg;
 
   const
     dlgFilter = 'Markdown Files(*.md)|*.md|Text Files(*.txt)|*.txt|All Files(*.*)|*.*';
   const
-    DocChanged = 'The Document has changed do you want to save now?';
+    DocChanged = 'The Document has changed, do you want to save the changes now?';
   const
     DefaultDateTimeFrmt = 'DD/MM/YY hh:mm:ss';
   public
@@ -233,6 +260,25 @@ implementation
 
 { Tfrmmain }
 
+procedure Tfrmmain.FileReadIonlyMsg;
+begin
+  MessageDlg(Text, 'Warring the filename been opened is marked as read only.' +
+    sLineBreak + sLineBreak + 'You may need to change the attributes before saving.',
+    mtInformation, [mbOK], 0);
+end;
+
+procedure Tfrmmain.DoOpenDocFromFileDrop(Filename: string);
+begin
+  m_OpenFile := Filename;
+
+  if FileIsReadOnlyUTF8(m_OpenFile) then
+  begin
+    FileReadIonlyMsg;
+  end;
+  txted.Lines.LoadFromFile(m_OpenFile);
+  txted.Modified := False;
+end;
+
 procedure Tfrmmain.DoOpenDocument;
 var
   od: TOpenDialog;
@@ -244,6 +290,12 @@ begin
   if od.Execute then
   begin
     m_OpenFile := od.FileName;
+
+    if FileIsReadOnlyUTF8(m_OpenFile) then
+    begin
+      FileReadIonlyMsg;
+    end;
+
     txted.Lines.LoadFromFile(m_OpenFile);
     txtEd.Modified := False;
   end;
@@ -355,7 +407,7 @@ begin
   lzFile := TemplatePath + mi.Caption + '.txt';
   //Check the file is here.
 
-  if FileExists(lzFile) then
+  if FileExistsUTF8(lzFile) then
   begin
     sl := TStringList.Create;
     sl.LoadFromFile(lzFile);
@@ -365,12 +417,11 @@ begin
   sl.Free;
 end;
 
-
 procedure Split(Delimiter: char; Str: string; ListOfStrings: TStrings);
 begin
   ListOfStrings.Clear;
   ListOfStrings.Delimiter := Delimiter;
-  ListOfStrings.StrictDelimiter := True; // Requires D2006 or newer.
+  ListOfStrings.StrictDelimiter := True;
   ListOfStrings.DelimitedText := Str;
 end;
 
@@ -385,7 +436,7 @@ begin
     repeat
       //Create menu item
       mi := TMenuItem.Create(mnuSection);
-      mi.Caption := ExtractFileNameWithoutExt(sr.Name);
+      mi.Caption := ExtractFileNameOnly(sr.Name);
       mi.OnClick := @HandleClickItem;
       mnuSection.Add(mi);
     until FindNext(SR) <> 0;
@@ -500,6 +551,8 @@ begin
 end;
 
 procedure Tfrmmain.FormCreate(Sender: TObject);
+var
+  sCmd: string;
 begin
   DlgExecuteOK := False;
   mnuAbout.Caption := '&About ' + Caption + '...';
@@ -511,11 +564,69 @@ begin
   //Create custom menu
   CustomMenuItem;
   //Load the section templates
-  if DirectoryExists(TemplatePath) then
+  if DirectoryExistsUTF8(TemplatePath) then
   begin
     LoadTemplates;
   end;
+  //Check for opening file from command line
+  if paramCount > 0 then
+  begin
+    sCmd := ParamStr(1);
+    if FileExistsUTF8(sCmd) then
+    begin
+      m_OpenFile := sCmd;
+
+      if FileIsReadOnlyUTF8(m_OpenFile) then
+      begin
+        FileReadIonlyMsg;
+      end;
+
+      txted.Lines.LoadFromFile(m_OpenFile);
+      txted.Modified := False;
+    end;
+  end;
   txtEdChange(Sender);
+end;
+
+procedure Tfrmmain.FormDropFiles(Sender: TObject; const FileNames: array of string);
+var
+  lzFile: string;
+begin
+  lzFile := FileNames[0];
+
+  if txtEd.Modified then
+  begin
+    case MessageDlg(Text, DocChanged, mtInformation, [mbYes, mbNo, mbCancel], 0) of
+      mrNo:
+      begin
+        DoOpenDocFromFileDrop(lzFile);
+      end;
+      mrYes:
+      begin
+        if FileExistsUTF8(m_OpenFile) then
+        begin
+          txtEd.Lines.SaveToFile(m_OpenFile);
+          DoOpenDocFromFileDrop(lzFile);
+        end
+        else
+        begin
+          mnuSaveAsClick(Sender);
+          if DlgExecuteOK then
+          begin
+            DoOpenDocFromFileDrop(lzFile);
+          end;
+        end;
+      end;
+    end;
+  end
+  else
+  begin
+    DoOpenDocFromFileDrop(lzFile);
+  end;
+
+  UpdateStatusBar;
+  txted.SetFocus;
+
 end;
 
 procedure Tfrmmain.mnuBoldItalicClick(Sender: TObject);
@@ -532,7 +643,8 @@ begin
   frm := TfrmChars.Create(self);
   frm.ShowModal;
 
-  if tools.ButtonPress = 1 then begin
+  if tools.ButtonPress = 1 then
+  begin
     txtEd.SelText := tools.CharCode;
   end;
 
@@ -542,7 +654,7 @@ end;
 
 procedure Tfrmmain.mnuCodeLanClick(Sender: TObject);
 var
-  frm : TfrmLan;
+  frm: TfrmLan;
 begin
   tools.ButtonPress := 0;
   frm := TfrmLan.Create(self);
@@ -556,6 +668,29 @@ begin
   frm.Free;
 end;
 
+procedure Tfrmmain.mnuCopyAppendClick(Sender: TObject);
+var
+  sOld: string;
+begin
+  sOld := clipboard.AsText;
+  clipboard.AsText := sOld + txtEd.SelText;
+end;
+
+procedure Tfrmmain.mnuCutAppendClick(Sender: TObject);
+var
+  sOld: string;
+begin
+  sOld := clipboard.AsText;
+  clipboard.AsText := sOld + txtEd.SelText;
+  txted.SelText := '';
+end;
+
+procedure Tfrmmain.mnuDeleteClick(Sender: TObject);
+begin
+  txtEd.SelText := '';
+  txted.SetFocus;
+end;
+
 procedure Tfrmmain.mnuFindClick(Sender: TObject);
 begin
   FindDialog1.FindText := txtEd.SelText;
@@ -564,42 +699,46 @@ end;
 
 procedure Tfrmmain.mnuGotoClick(Sender: TObject);
 var
-  iCode, lnIndex, lnLen, RetVal: integer;
-  sNum: string;
+  nLine: integer;
+  NewVal: string;
+  sLineLn: integer;
 begin
 
-  lnIndex := 0;
-  RetVal := 0;
+  NewVal := IntToStr(txtEd.CaretPos.y);
 
-  lnIndex := (txtEd.CaretPos.Y + 1);
-  sNum := Trim(InputBox('Goto', 'Line Number:', IntToStr(lnIndex)));
+  if NewVal = '0' then
+    NewVal := '1';
 
-  //Check for vaild int
-  val(sNum, lnIndex, iCode);
-
-  if iCode = 1 then
+  NewVal := InputBox('Goto', 'Line:', NewVal);
+  if TryStrToInt(NewVal, nLine) then
   begin
-    MessageDlg(Text, 'Input was not a valid Integer.', mtWarning, [mbOK], 0);
+    if nLine > txtEd.Lines.Count then
+      nLine := txtEd.Lines.Count
+    else if nLine <= 0 then
+    begin
+      nLine := 1;
+    end;
+    sLineLn := Length(txtEd.Lines[nLine - 1]);
+    txtEd.CaretPos := TPoint.Create(0, nLine - 1);
+    txtEd.SelLength := sLineLn;
   end
   else
   begin
-    //Convert the string to a number
-    lnIndex := StrToInt(sNum);
-    //Get line index
-    RetVal := SendMessage(txtEd.Handle, EM_LINEINDEX, lnIndex - 1, 0);
-    //Get line length
-    lnLen := SendMessage(txtEd.Handle, EM_LINELENGTH, RetVal, 0) + 2;
-    //highlight the line
-    txtEd.SelStart := RetVal;
-    txtEd.SelLength := lnLen;
-    txtEd.SetFocus;
+    MessageDlg(Text, 'Value was not a correct integer.',
+      mtError, [mbOK], 0);
   end;
+  txtEd.SetFocus;
 end;
 
 procedure Tfrmmain.mnuHighlightClick(Sender: TObject);
 begin
   txtEd.SelText := '<mark>' + txtEd.SelText + '</mark>';
   txtEd.SetFocus;
+end;
+
+procedure Tfrmmain.mnuIndentClick(Sender: TObject);
+begin
+  mnuIndent.Checked := not mnuIndent.Checked;
 end;
 
 procedure Tfrmmain.mnuInlineCodeClick(Sender: TObject);
@@ -641,7 +780,7 @@ begin
 end;
 
 procedure Tfrmmain.Button1Click(Sender: TObject);
-BEGIN
+begin
 end;
 
 procedure Tfrmmain.cmdCodeClick(Sender: TObject);
@@ -671,7 +810,7 @@ end;
 
 procedure Tfrmmain.cmdHtmlCodesClick(Sender: TObject);
 begin
-  mnuCharCodesClick(sender);
+  mnuCharCodesClick(Sender);
 end;
 
 procedure Tfrmmain.cmdHyperlinkClick(Sender: TObject);
@@ -687,6 +826,11 @@ end;
 procedure Tfrmmain.cmdItalicClick(Sender: TObject);
 begin
   mnuItalicClick(Sender);
+end;
+
+procedure Tfrmmain.cmdLicenseClick(Sender: TObject);
+begin
+  mnuLicenseClick(Sender);
 end;
 
 procedure Tfrmmain.cmdLstCheckClick(Sender: TObject);
@@ -717,6 +861,16 @@ end;
 procedure Tfrmmain.cmdStrikeClick(Sender: TObject);
 begin
   mnuStrikeClick(Sender);
+end;
+
+procedure Tfrmmain.cmdSubscriptClick(Sender: TObject);
+begin
+  mnuSubscriptClick(Sender);
+end;
+
+procedure Tfrmmain.cmdSuperscriptClick(Sender: TObject);
+begin
+  mnuSuperscriptClick(Sender);
 end;
 
 procedure Tfrmmain.cmdTableClick(Sender: TObject);
@@ -759,7 +913,7 @@ begin
       end;
       mrYes:
       begin
-        if FileExists(m_OpenFile) then
+        if FileExistsUTF8(m_OpenFile) then
         begin
           txtEd.Lines.SaveToFile(m_OpenFile);
           CloseAction := caFree;
@@ -779,7 +933,6 @@ begin
   begin
     CloseAction := caFree;
   end;
-
 end;
 
 procedure Tfrmmain.mnuBoldClick(Sender: TObject);
@@ -879,7 +1032,7 @@ end;
 
 procedure Tfrmmain.mnuHyperlinkClick(Sender: TObject);
 var
-  frm : TfrmHyeperLink;
+  frm: TfrmHyeperLink;
 begin
   frm := TfrmHyeperLink.Create(self);
   Tools.ButtonPress := 0;
@@ -897,7 +1050,7 @@ end;
 
 procedure Tfrmmain.mnuImageClick(Sender: TObject);
 var
-  frm : TfrmImage;
+  frm: TfrmImage;
 begin
   frm := TfrmImage.Create(self);
   Tools.ButtonPress := 0;
@@ -914,8 +1067,8 @@ end;
 
 procedure Tfrmmain.mnuInsertFileClick(Sender: TObject);
 var
-  od : TOpenDialog;
-  sl : TStringList;
+  od: TOpenDialog;
+  sl: TStringList;
 begin
   od := TOpenDialog.Create(self);
   sl := TStringList.Create;
@@ -924,7 +1077,8 @@ begin
   od.Filter := dlgFilter;
   od.FilterIndex := 1;
 
-  if od.Execute then begin
+  if od.Execute then
+  begin
     sl.LoadFromFile(od.FileName);
     txted.SelText := sl.GetText;
     sl.Free;
@@ -937,25 +1091,44 @@ begin
   MDStyle('*');
 end;
 
+procedure Tfrmmain.mnuLicenseClick(Sender: TObject);
+var
+  frm: TfrmLic;
+begin
+  frm := TfrmLic.Create(self);
+  tools.ButtonPress := 0;
+  frm.ShowModal;
+  if tools.ButtonPress = 1 then
+  begin
+    txted.SelText := tools.LicStr;
+  end;
+  txted.SetFocus;
+  //Destrory from
+  frm.Free;
+end;
+
 procedure Tfrmmain.mnuLowercaseClick(Sender: TObject);
 begin
   MDDoCase(False);
 end;
 
 procedure Tfrmmain.mnuNewWndClick(Sender: TObject);
-var
-  p: TProcess;
 begin
   //Start a new process of the app
-  p := TProcess.Create(nil);
-  p.Executable := Application.ExeName;
-  p.Execute;
-  p.Free;
+  OpenDocument(Application.ExeName);
 end;
 
 procedure Tfrmmain.mnuOListClick(Sender: TObject);
 begin
   MDList(True);
+end;
+
+procedure Tfrmmain.mnuOpenFFolderClick(Sender: TObject);
+begin
+  if FileExistsUTF8(m_OpenFile) then
+  begin
+    OpenDocument(ExtractFileDir(m_OpenFile));
+  end;
 end;
 
 procedure Tfrmmain.mnuPasteClick(Sender: TObject);
@@ -980,14 +1153,20 @@ begin
   sd.Filter := dlgFilter;
   sd.DefaultExt := 'md';
 
+  if m_OpenFile <> '' then
+  begin
+    sd.FileName := ExtractFileName(m_OpenFile);
+  end;
+
   DlgExecuteOK := sd.Execute;
 
   if DlgExecuteOK then
   begin
 
-    if FileExists(sd.FileName) then
+    if FileExistsUTF8(sd.FileName) then
     begin
-      if MessageDlg(Text, 'The filename already exists do you want to overwrite the file?',
+      if MessageDlg(Text,
+        'The filename already exists do you want to overwrite the file?',
         mtInformation, [mbYes, mbNo, mbCancel], 0) = mrYes then
       begin
         m_OpenFile := sd.FileName;
@@ -1052,6 +1231,7 @@ var
 begin
   frm := TfrmAbout.Create(self);
   frm.ShowModal;
+  frm.Free;
 end;
 
 procedure Tfrmmain.mnuCutClick(Sender: TObject);
@@ -1081,7 +1261,7 @@ begin
       mrYes:
       begin
 
-        if FileExists(m_OpenFile) then
+        if FileExistsUTF8(m_OpenFile) then
         begin
           txtEd.Lines.SaveToFile(m_OpenFile);
           txtEd.Clear;
@@ -1122,8 +1302,7 @@ begin
       end;
       mrYes:
       begin
-
-        if FileExists(m_OpenFile) then
+        if FileExistsUTF8(m_OpenFile) then
         begin
           txtEd.Lines.SaveToFile(m_OpenFile);
           DoOpenDocument;
@@ -1174,6 +1353,18 @@ begin
   MDDoCase(True);
 end;
 
+procedure Tfrmmain.mnuVStatusClick(Sender: TObject);
+begin
+  mnuVStatus.Checked := not mnuVStatus.Checked;
+  StatusBar1.Visible := mnuVStatus.Checked;
+end;
+
+procedure Tfrmmain.mnuVToolbarClick(Sender: TObject);
+begin
+  mnuVToolbar.Checked := not mnuVToolbar.Checked;
+  ToolBar1.Visible := mnuVToolbar.Checked;
+end;
+
 procedure Tfrmmain.mnuWordwrapClick(Sender: TObject);
 begin
   mnuWordwrap.Checked := not mnuWordwrap.Checked;
@@ -1212,8 +1403,6 @@ begin
           txtEd.SelText := ReplaceText;
         Found := SearchMemo(txtEd, FindText, Options);
       end;
-      if not Found then
-        SendMessage(txtEd.Handle, WM_VSCROLL, SB_TOP, 0);
     end;
 
     if (not Found) and (frReplace in Options) then
@@ -1234,22 +1423,11 @@ var
   S: string;
 begin
 
-  if key = '[' then
+  if key in ['(', '[', '{'] then
   begin
-    txted.SelText := '[]';
-    txted.SelStart := txted.SelStart - 1;
-    key := #0;
-  end;
-  if key = '(' then
-  begin
-    txted.SelText := '()';
-    txted.SelStart := txted.SelStart - 1;
-    key := #0;
-  end;
-
-  if key = '{' then
-  begin
-    txted.SelText := '{}';
+    if key = '(' then txted.SelText := '()';
+    if key = '[' then txted.SelText := '[]';
+    if key = '{' then txted.SelText := '{}';
     txted.SelStart := txted.SelStart - 1;
     key := #0;
   end;
@@ -1259,21 +1437,29 @@ begin
     key := #0;
     with Sender as TMemo do
     begin
-      // figure out line and column position of caret
-      line := CaretPos.Y;
-      Col := CaretPos.X;
 
-      // get part of current line in front of caret
-      S := Copy(Lines[line], 1, col);
+      if mnuIndent.Checked then
+      begin
+        // figure out line and column position of caret
+        line := CaretPos.Y;
+        Col := CaretPos.X;
 
-      // count blanks and tabs in this string
-      indent := 0;
-      while (indent < length(S)) and (S[indent + 1] in [' ', #9]) do
-        Inc(indent);
+        // get part of current line in front of caret
+        S := Copy(Lines[line], 1, col);
 
-      // insert a linebreak followed by the substring of blanks and tabs
-      SelText := sLineBreak + Copy(S, 1, indent);
-      S := '';
+        // count blanks and tabs in this string
+        indent := 0;
+        while (indent < length(S)) and (S[indent + 1] in [#32, #9]) do
+          Inc(indent);
+
+        // insert a linebreak followed by the substring of blanks and tabs
+        SelText := sLineBreak + Copy(S, 1, indent);
+        S := '';
+      end
+      else
+      begin
+        Key := #13;
+      end;
     end;
   end;
 end;
