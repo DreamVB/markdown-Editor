@@ -1,13 +1,13 @@
-program mdEdit;
+//program mdEdit;
 
 {$mode objfpc}{$H+}
 
 uses
  {$IFDEF UNIX}
   cthreads,
-                           {$ENDIF} {$IFDEF HASAMIGA}
+                            {$ENDIF} {$IFDEF HASAMIGA}
   athreads,
-                           {$ENDIF}
+                            {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms,
   Unit1,

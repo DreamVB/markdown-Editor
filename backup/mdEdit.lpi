@@ -59,6 +59,7 @@
         <Filename Value="units\unit3.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmHyeperLink"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit3"/>
       </Unit>
@@ -66,6 +67,7 @@
         <Filename Value="units\unit4.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmTable"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit4"/>
       </Unit>
@@ -92,6 +94,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\unit8.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmLic"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Unit8"/>
       </Unit>
     </Units>
   </ProjectOptions>
