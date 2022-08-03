@@ -1,4 +1,4 @@
-program mdEdit;
+//program mdEdit;
 
 {$mode objfpc}{$H+}
 
@@ -17,7 +17,7 @@ uses
   Unit4,
   Unit5,
   Unit6,
-  Unit7 { you can add units after this };
+  Unit7, Unit8 { you can add units after this };
 
 {$R *.res}
 
@@ -32,5 +32,6 @@ begin
   Application.CreateForm(TfrmAbout, frmAbout);
   Application.CreateForm(TfrmLan, frmLan);
   Application.CreateForm(TfrmChars, frmChars);
+  Application.CreateForm(TfrmLic, frmLic);
   Application.Run;
 end.
